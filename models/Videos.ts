@@ -1,6 +1,4 @@
 import mongoose, { Schema, model, models } from "mongoose";
-import bcrypt from "bcryptjs";
-import { title } from "process";
 
 export const VIDEO_DIMENSIONS = {
   width: 1080,
@@ -25,7 +23,7 @@ const videoSchema = new Schema(
   {
     title: { type: String, required: true },
     description: { type: String, required: true },
-    vidoeUrl: { type: String, required: true },
+    videoUrl: { type: String, required: true },
     thumbnailUrl: { type: String, required: true },
     controls: { type: Boolean, default: true },
     transformation: {
@@ -36,6 +34,7 @@ const videoSchema = new Schema(
   },
   {
     timestamps: true,
+    strict: false, // Ensures existing legacy documents with vidoeUrl can still be retrieved
   }
 );
 
