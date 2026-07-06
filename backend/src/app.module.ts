@@ -1,0 +1,49 @@
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { DatabaseModule } from './database/database.module';
+import { AuthModule } from './auth/auth.module';
+import { VideosModule } from './videos/videos.module';
+import { ImagekitModule } from './imagekit/imagekit.module';
+import { RedisCacheModule } from './cache/cache.module';
+import { LikesModule } from './likes/likes.module';
+import { CommentsModule } from './comments/comments.module';
+import { FollowsModule } from './follows/follows.module';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 10,
+      },
+      {
+        ttl: 3600000,
+        limit: 100,
+      },
+    ]),
+    DatabaseModule,
+    AuthModule,
+    VideosModule,
+    ImagekitModule,
+    RedisCacheModule,
+    LikesModule,
+    CommentsModule,
+    FollowsModule,
+  ],
+  controllers: [AppController],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
+})
+export class AppModule {}
