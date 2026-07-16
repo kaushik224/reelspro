@@ -4,8 +4,6 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "frontend:dev": "npm run dev --prefix frontend",
-    "frontend:build": "npm run build --prefix frontend",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
