@@ -17,8 +17,14 @@ export default defineConfig({
         target: 'http://localhost:3001',
         changeOrigin: true,
         secure: false,
-        withCredentials: true,
-        configure: (proxy, options) => {
+        // Removed withCredentials: true from here
+        configure: (proxy) => { //  Removed unused 'options' parameter
+          // Pass credentials/cookies upstream if needed
+          proxy.on('proxyReq', (proxyReq) => {
+            proxyReq.setHeader('withCredentials', 'true');
+          });
+
+          // Clean up response cookies for localhost
           proxy.on('proxyRes', (proxyRes) => {
             const cookies = proxyRes.headers['set-cookie'];
             if (cookies) {
