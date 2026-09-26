@@ -20,12 +20,14 @@ import { FollowsModule } from './follows/follows.module';
     }),
     ThrottlerModule.forRoot([
       {
+        name: 'short',
         ttl: 60000,
-        limit: 10,
+        limit: 100,
       },
       {
+        name: 'long',
         ttl: 3600000,
-        limit: 100,
+        limit: 1000,
       },
     ]),
     DatabaseModule,
